@@ -1,6 +1,6 @@
 {
   "name": "easy-google-places",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Query Google Places API with automatic area subdivision to maximize results.",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -19,6 +19,7 @@
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node --sourcemap=external && tsc --emitDeclarationOnly --outDir dist",
     "test": "bun test",
+    "mock:circles": "bun run scripts/mock-circles.ts",
     "prepublishOnly": "bun run build"
   },
   "keywords": [

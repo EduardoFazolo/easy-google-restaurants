@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Easy Google Places Circle Debug</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --text: #112032;
+        --muted: #4f6378;
+        --main: #2a6ad8;
+        --main-fill: rgba(42, 106, 216, 0.08);
+        --sub: #e55252;
+        --sub-fill: rgba(229, 82, 82, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at top left, #e8f1ff 0%, var(--bg) 55%);
+        color: var(--text);
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      .card {
+        width: min(1100px, 95vw);
+        background: var(--card);
+        border-radius: 18px;
+        box-shadow: 0 14px 40px rgba(17, 32, 50, 0.12);
+        padding: 20px;
+      }
+      .title {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .meta {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      svg {
+        width: 100%;
+        height: auto;
+        border-radius: 14px;
+        background:
+          linear-gradient(rgba(17, 32, 50, 0.04) 1px, transparent 1px) 0 0 / 30px 30px,
+          linear-gradient(90deg, rgba(17, 32, 50, 0.04) 1px, transparent 1px) 0 0 / 30px 30px,
+          #fbfdff;
+        margin-top: 16px;
+        border: 1px solid #dce6f2;
+      }
+      .main-circle {
+        fill: var(--main-fill);
+        stroke: var(--main);
+        stroke-width: 2;
+      }
+      .sub-circle {
+        fill: var(--sub-fill);
+        stroke: var(--sub);
+        stroke-width: 1.2;
+      }
+      .center-dot {
+        fill: #0c2f77;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="card">
+      <h1 class="title">Easy Google Places Circle Debug</h1>
+      <p class="meta">
+        Center: (43.6591, -70.2568) |
+        Main radius: 1500m |
+        Sub radius: 500m |
+        Generated circles: 19
+      </p>
+      <svg viewBox="0 0 980 980" role="img" aria-label="Circle visualization">
+        <circle cx="490" cy="490" r="343.50" class="main-circle" />
+        <circle cx="318.25" cy="787.48" r="114.50" class="sub-circle" />
+<circle cx="490.00" cy="787.48" r="114.50" class="sub-circle" />
+<circle cx="661.75" cy="787.48" r="114.50" class="sub-circle" />
+<circle cx="232.38" cy="638.74" r="114.50" class="sub-circle" />
+<circle cx="404.13" cy="638.74" r="114.50" class="sub-circle" />
+<circle cx="575.87" cy="638.74" r="114.50" class="sub-circle" />
+<circle cx="747.62" cy="638.74" r="114.50" class="sub-circle" />
+<circle cx="146.50" cy="490.00" r="114.50" class="sub-circle" />
+<circle cx="318.25" cy="490.00" r="114.50" class="sub-circle" />
+<circle cx="490.00" cy="490.00" r="114.50" class="sub-circle" />
+<circle cx="661.75" cy="490.00" r="114.50" class="sub-circle" />
+<circle cx="833.50" cy="490.00" r="114.50" class="sub-circle" />
+<circle cx="232.38" cy="341.26" r="114.50" class="sub-circle" />
+<circle cx="404.13" cy="341.26" r="114.50" class="sub-circle" />
+<circle cx="575.87" cy="341.26" r="114.50" class="sub-circle" />
+<circle cx="747.62" cy="341.26" r="114.50" class="sub-circle" />
+<circle cx="318.25" cy="192.52" r="114.50" class="sub-circle" />
+<circle cx="490.00" cy="192.52" r="114.50" class="sub-circle" />
+<circle cx="661.75" cy="192.52" r="114.50" class="sub-circle" />
+        <circle cx="490" cy="490" r="4" class="center-dot" />
+      </svg>
+    </section>
+  </body>
+</html>

@@ -14,9 +14,10 @@ describe("PlaceQueryBuilder Integration", () => {
 
   test("runs full flow with mocked responses", async () => {
     const mockResults = [
-      { place_id: "p1", name: "Place 1", rating: 4.5, business_status: "OPERATIONAL", geometry: { location: { lat: 1, lng: 1 } } },
-      { place_id: "p2", name: "Place 2", rating: 4.5, business_status: "OPERATIONAL", geometry: { location: { lat: 2, lng: 2 } } },
-      { place_id: "p3", name: "Place 3", rating: 4.5, business_status: "CLOSED_TEMPORARILY", geometry: { location: { lat: 3, lng: 3 } } }
+      { place_id: "p1", name: "Place 1", rating: 4.5, business_status: "OPERATIONAL", geometry: { location: { lat: 10.002, lng: 10.001 } } },
+      { place_id: "p2", name: "Place 2", rating: 4.5, business_status: "OPERATIONAL", geometry: { location: { lat: 10.006, lng: 10.004 } } },
+      { place_id: "p3", name: "Place 3", rating: 4.5, business_status: "CLOSED_TEMPORARILY", geometry: { location: { lat: 10.003, lng: 10.002 } } },
+      { place_id: "p4", name: "Out of Radius", rating: 4.7, business_status: "OPERATIONAL", geometry: { location: { lat: 10.03, lng: 10.03 } } }
     ];
 
     // Mock fetch
@@ -44,6 +45,7 @@ describe("PlaceQueryBuilder Integration", () => {
     // Our mock returns the same results for every call, so we'll get duplicates which are deduped by place_id.
     expect(finishedResults).toHaveLength(2);
     expect(finishedResults[0].place_id).toBe("p1");
+    expect(finishedResults.find((p: any) => p.place_id === "p4")).toBeUndefined();
   });
 
   test("throws error if API key missing", async () => {

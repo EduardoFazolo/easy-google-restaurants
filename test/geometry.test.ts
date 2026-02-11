@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { generateSubCircles } from "../src/geometry";
+import { generateSubCircles, haversineDistanceMeters } from "../src/geometry";
 import { Coordinate } from "../src/types";
 
 describe("generateSubCircles", () => {
@@ -34,5 +34,16 @@ describe("generateSubCircles", () => {
       const first = circles[0];
       const hasDifferent = circles.some(c => c.latitude !== first.latitude || c.longitude !== first.longitude);
       expect(hasDifferent).toBe(true);
+  });
+
+  test("keeps sub-circle centers within the requested radius", () => {
+    const center: Coordinate = { latitude: 43.6591, longitude: -70.2568 }; // Portland, ME
+    const radius = 1200;
+    const circles = generateSubCircles(center, radius, 500);
+
+    for (const circle of circles) {
+      const distance = haversineDistanceMeters(center, circle);
+      expect(distance).toBeLessThanOrEqual(radius + 0.01);
+    }
   });
 });

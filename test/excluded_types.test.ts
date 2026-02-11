@@ -14,9 +14,9 @@ describe("Excluded Types Integration", () => {
 
   test("Legacy API: Filters out excluded types client-side", async () => {
     const mockResults = [
-        { place_id: "p1", name: "Place 1", types: ["restaurant", "food"], rating: 4.5, geometry: { location: { lat: 1, lng: 1 } } },
-        { place_id: "p2", name: "Place 2", types: ["bar", "point_of_interest"], rating: 4.5, geometry: { location: { lat: 2, lng: 2 } } },
-        { place_id: "p3", name: "Place 3", types: ["cafe", "food"], rating: 4.5, geometry: { location: { lat: 3, lng: 3 } } }
+        { place_id: "p1", name: "Place 1", types: ["restaurant", "food"], rating: 4.5, geometry: { location: { lat: 10.001, lng: 10.001 } } },
+        { place_id: "p2", name: "Place 2", types: ["bar", "point_of_interest"], rating: 4.5, geometry: { location: { lat: 10.002, lng: 10.002 } } },
+        { place_id: "p3", name: "Place 3", types: ["cafe", "food"], rating: 4.5, geometry: { location: { lat: 10.003, lng: 10.003 } } }
     ];
 
     global.fetch = mock(async () => {

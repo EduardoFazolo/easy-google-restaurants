@@ -14,8 +14,9 @@ describe("NewPlaceQueryBuilder Integration", () => {
 
   test("runs new API flow with mocked responses", async () => {
     const mockResults = [
-      { id: "np1", name: "places/np1", displayName: { text: "New Place 1", languageCode: "en" }, rating: 4.8, businessStatus: "OPERATIONAL", location: { latitude: 10, longitude: 10 } },
-      { id: "np2", name: "places/np2", displayName: { text: "New Place 2", languageCode: "en" }, rating: 4.2, businessStatus: "OPERATIONAL", location: { latitude: 11, longitude: 11 } }
+      { id: "np1", name: "places/np1", displayName: { text: "New Place 1", languageCode: "en" }, rating: 4.8, businessStatus: "OPERATIONAL", location: { latitude: 10.002, longitude: 10.001 } },
+      { id: "np2", name: "places/np2", displayName: { text: "New Place 2", languageCode: "en" }, rating: 4.2, businessStatus: "OPERATIONAL", location: { latitude: 10.004, longitude: 10.004 } },
+      { id: "np3", name: "places/np3", displayName: { text: "Too Far", languageCode: "en" }, rating: 4.9, businessStatus: "OPERATIONAL", location: { latitude: 10.04, longitude: 10.04 } }
     ];
 
     // Mock fetch
@@ -45,5 +46,6 @@ describe("NewPlaceQueryBuilder Integration", () => {
     expect(finishedResults[0].id).toBe("np1");
     // Check if fields are mapped correctly (although here strictly relying on mock result structure)
     expect(finishedResults[0].rating).toBe(4.8);
+    expect(finishedResults.find((p: any) => p.id === "np3")).toBeUndefined();
   });
 });

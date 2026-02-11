@@ -1,10 +1,32 @@
-import { generateSubCircles } from "./geometry";
+import { generateSubCircles, haversineDistanceMeters } from "./geometry";
 import { fetchLegacyPlaces, fetchNewPlaces } from "./api";
 import { writeFileSync } from "fs";
 import { Coordinate, MapsPlaceResult, NearbySearchAttributes, PlaceResult } from "./types";
 
 type OutputFormat = "csv" | "json" | ((places: MapsPlaceResult[]) => void);
 type NewOutputFormat = "csv" | "json" | ((places: PlaceResult[]) => void);
+
+function isWithinRequestedRadius(origin: Coordinate, point: Coordinate, radius: number): boolean {
+  return haversineDistanceMeters(origin, point) <= radius;
+}
+
+function getLegacyPlaceCoordinate(place: MapsPlaceResult): Coordinate | null {
+  const location = place.geometry?.location;
+  if (!location) return null;
+
+  const latitude = typeof location.lat === "function" ? location.lat() : location.lat;
+  const longitude = typeof location.lng === "function" ? location.lng() : location.lng;
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+  return { latitude, longitude };
+}
+
+function getNewPlaceCoordinate(place: PlaceResult): Coordinate | null {
+  const location = place.location;
+  if (!location) return null;
+  if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) return null;
+  return { latitude: location.latitude, longitude: location.longitude };
+}
 
 /**
  * Legacy Query Builder using the original Maps API (Nearby Search).
@@ -149,6 +171,16 @@ export class PlaceQueryBuilder {
     }
 
     let uniquePlaces = Array.from(allPlacesMap.values());
+
+    const beforeRadiusFilter = uniquePlaces.length;
+    uniquePlaces = uniquePlaces.filter((place) => {
+      const placeCoordinate = getLegacyPlaceCoordinate(place);
+      if (!placeCoordinate) return false;
+      return isWithinRequestedRadius(this._location, placeCoordinate, this._radius);
+    });
+    if (this._showLogs && beforeRadiusFilter !== uniquePlaces.length) {
+      console.log(`Filtered out ${beforeRadiusFilter - uniquePlaces.length} places outside requested radius.`);
+    }
     
     // Filter by minRate
     uniquePlaces = uniquePlaces.filter(p => (p.rating || 0) >= this._minRate);
@@ -359,6 +391,17 @@ export class NewPlaceQueryBuilder {
     }
 
     let uniquePlaces = Array.from(allPlacesMap.values());
+
+    const beforeRadiusFilter = uniquePlaces.length;
+    uniquePlaces = uniquePlaces.filter((place) => {
+      const placeCoordinate = getNewPlaceCoordinate(place);
+      if (!placeCoordinate) return false;
+      return isWithinRequestedRadius(this._location, placeCoordinate, this._radius);
+    });
+    if (this._showLogs && beforeRadiusFilter !== uniquePlaces.length) {
+      console.log(`Filtered out ${beforeRadiusFilter - uniquePlaces.length} places outside requested radius.`);
+    }
+
     uniquePlaces = uniquePlaces.filter(p => (p.rating || 0) >= this._minRate);
 
     if (this._limitCount && uniquePlaces.length > this._limitCount) {

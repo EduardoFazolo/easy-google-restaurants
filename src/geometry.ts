@@ -1,5 +1,27 @@
 import { Coordinate } from "./types";
 
+const EARTH_RADIUS_METERS = 6371000;
+
+/**
+ * Calculates the haversine distance in meters between two coordinates.
+ */
+export function haversineDistanceMeters(a: Coordinate, b: Coordinate): number {
+  const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+  const dLat = toRadians(b.latitude - a.latitude);
+  const dLon = toRadians(b.longitude - a.longitude);
+  const lat1 = toRadians(a.latitude);
+  const lat2 = toRadians(b.latitude);
+
+  const sinLat = Math.sin(dLat / 2);
+  const sinLon = Math.sin(dLon / 2);
+  const h =
+    sinLat * sinLat +
+    Math.cos(lat1) * Math.cos(lat2) * sinLon * sinLon;
+
+  return 2 * EARTH_RADIUS_METERS * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
 
 /**
  * Generates a list of coordinates for sub-circles that cover a larger circle.
@@ -21,10 +43,7 @@ export function generateSubCircles(
   }
 
   const coordinates: Coordinate[] = [];
-  
-  // Earth's radius in meters
-  const R = 6371000;
-  
+
   // Convert latitude to radians to calculate longitude offsets correctly
   const latRad = (center.latitude * Math.PI) / 180;
   
@@ -58,10 +77,8 @@ export function generateSubCircles(
       const distY = yOffset / latDegPerMeter;
       const distance = Math.sqrt(distX * distX + distY * distY);
 
-      // We include the circle if its center is within (ParentRadius + epsilon) 
-      // or if it covers any part of the parent circle. 
-      // Being generous: if distance - subRadius < radius
-      if (distance - subRadius < radius) {
+      // Keep sub-circle centers strictly inside the requested radius.
+      if (distance <= radius) {
         coordinates.push({
           latitude: center.latitude + yOffset,
           longitude: center.longitude + xOffset

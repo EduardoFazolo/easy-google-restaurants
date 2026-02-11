@@ -85,6 +85,31 @@ Using `.onFinished("csv")` will generate a CSV file (`places_output.csv` for New
 ### JSON Output
 Using `.onFinished("json")` will generate a JSON file (`places_output.json` for New API or `maps_places_output.json` for Legacy API).
 
+## Debug Circle Visualization (HTML)
+
+You can generate an HTML preview of the main circle + generated sub-circles:
+
+```bash
+npm run mock:circles
+# or with custom values:
+npm run mock:circles -- --lat=43.6591 --lng=-70.2568 --radius=2000 --subRadius=500 --out=debug_circles.html
+```
+
+It writes an HTML file (default: `circles_preview.html`) that you can open in a browser.
+
+You can also call it programmatically:
+
+```typescript
+import { generateCirclesHtml } from "easy-google-places";
+
+generateCirclesHtml({
+  center: { latitude: 43.6591, longitude: -70.2568 },
+  radius: 2000,
+  subRadius: 500,
+  outputPath: "debug_circles.html",
+});
+```
+
 ## Requirements
 - Node.js or Bun environment.
 - A valid Google Cloud API Key with:
